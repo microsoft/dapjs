@@ -1027,6 +1027,11 @@ export function getMbedDevices() {
     return devices.filter(d => /MBED CMSIS-DAP/.test(d.product))
 }
 
+export function getEdbgDevices() {
+    let devices = HID.devices() as HidDevice[]
+    return devices.filter(d => /EDBG CMSIS-DAP/.test(d.product))
+}
+
 export interface Map<T> {
     [n: string]: T;
 }
