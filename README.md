@@ -1,5 +1,7 @@
 # DAP.JS
 
+**Note: this package is now maintained by ARM at https://github.com/ARMmbed/dapjs**
+
 Node.js interface to DAP-CMSIS over USB/HID
 
 This package is meant to provide a subset of functionality of [pyOCD](https://github.com/mbedmicro/pyOCD).
