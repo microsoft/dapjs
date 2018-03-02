@@ -265,9 +265,16 @@ export class Dap {
     private sent: CmdEntry[] = [];
     private waiting: CmdEntry[] = [];
     private maxSent = 1;
+    private packetLength = 64;
 
     constructor(path: string) {
         this.dev = new HID.HID(path)
+
+        var deviceInfo = this.dev.getDeviceInfo();
+
+        if (deviceInfo && deviceInfo.manufacturer === 'Atmel Corp.') {
+            this.packetLength = 513;
+        }
 
         this.dev.on("data", (buf: Buffer) => {
             let c = this.sent.shift()
@@ -296,7 +303,7 @@ export class Dap {
 
     private sendNums(lst: number[]) {
         lst.unshift(0)
-        while (lst.length < 64)
+        while (lst.length < this.packetLength)
             lst.push(0)
         this.dev.write(lst)
     }
@@ -1025,6 +1032,11 @@ export interface HidDevice {
 export function getMbedDevices() {
     let devices = HID.devices() as HidDevice[]
     return devices.filter(d => /MBED CMSIS-DAP/.test(d.product))
+}
+
+export function getEdbgDevices() {
+    let devices = HID.devices() as HidDevice[]
+    return devices.filter(d => /EDBG CMSIS-DAP/.test(d.product))
 }
 
 export interface Map<T> {
